@@ -2,7 +2,7 @@ import random
 from openpyxl import Workbook
 
 def do_distribution(participants):
-    ids = [p[1] for p in participants]
+    ids = [p[1] for p in participants]  # user_id
     shuffled = ids.copy()
 
     while True:
