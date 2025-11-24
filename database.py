@@ -42,14 +42,6 @@ def get_games():
     conn.close()
     return games
 
-def get_game_by_chat(chat_id):
-    conn = sqlite3.connect("santa.db")
-    c = conn.cursor()
-    c.execute("SELECT id, name FROM games WHERE chat_id=?", (chat_id,))
-    game = c.fetchone()
-    conn.close()
-    return game
-
 def add_participant(user_id, username, full_name, wishes, game_id):
     conn = sqlite3.connect("santa.db")
     c = conn.cursor()
@@ -71,14 +63,6 @@ def get_participants(game_id):
 def delete_participants(game_id):
     conn = sqlite3.connect("santa.db")
     c = conn.cursor()
-    c.execute("DELETE FROM participants WHERE game_id=?", (game_id,))
-    conn.commit()
-    conn.close()
-
-def delete_game(game_id):
-    conn = sqlite3.connect("santa.db")
-    c = conn.cursor()
-    c.execute("DELETE FROM games WHERE id=?", (game_id,))
     c.execute("DELETE FROM participants WHERE game_id=?", (game_id,))
     conn.commit()
     conn.close()
