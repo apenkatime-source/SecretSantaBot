@@ -162,5 +162,5 @@ def main():
     app.add_handler(MessageHandler(filters.Regex("^Админ-панель$"), admin_panel))
     app.run_polling()
 
-if name == "__main__":
+if __name__ == "__main__":
     main()
