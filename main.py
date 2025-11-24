@@ -169,5 +169,3 @@ def main():
     # Запуск бота через polling
     app.run_polling()
 
-if __name__ == "__main__":
-    main()
