@@ -1,13 +1,11 @@
-# БОТ ТАЙНОГО САНТЫ (Replit / Render 24/7)
+# Тайный Санта — Telegram Bot
 
-## Установка
-1. Создать папку на ПК.
-2. Скопировать туда все файлы.
-3. В config.py указать токен и admin_username.
-4. Создать ZIP из этой папки.
-5. Загрузить ZIP в GitHub.
-6. Подключить репозиторий к Render:
-   - New → Web Service → GitHub repo
+## Как пользоваться
+
+1. Вставь токен в config.py
+2. Создай репозиторий на GitHub и залей все файлы.
+3. На Render создайте новый Web Service:
    - Build Command: pip install -r requirements.txt
    - Start Command: python main.py
-7. Бот будет работать 24/7.
+4. Deploy и бот работает 24/7
+5. В Telegram: /start → кнопка "Участвовать"
