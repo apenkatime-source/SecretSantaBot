@@ -149,7 +149,7 @@ async def distribute(update, context):
     games = db.get_games()
 
     for gid, name in games:
-        participants = db.
+       participants = db.get_participants(gid)
         get_participants(gid)
 
         if len(participants) < 2:
