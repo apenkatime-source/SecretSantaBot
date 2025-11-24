@@ -2,7 +2,6 @@ import logging
 from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Application, CommandHandler, MessageHandler, ContextTypes, filters, ConversationHandler
 from config import TOKEN, ADMIN_USERNAME
-from keep_alive import keep_alive
 import database as db
 import utils
 
@@ -14,6 +13,7 @@ WAITING_FULLNAME = 2
 WAITING_WISHES = 3
 WAITING_GAME_CHOICE = 4
 
+# ---------- START ----------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [[KeyboardButton("Участвовать")], [KeyboardButton("Мой профиль")]]
     user = update.effective_user
@@ -24,6 +24,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup=ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
     )
 
+# ---------- ADMIN PANEL ----------
 async def admin_panel(update: Update, context):
     if update.effective_user.username != ADMIN_USERNAME:
         return
@@ -49,6 +50,7 @@ async def save_game(update: Update, context):
     await update.message.reply_text(f"Коробка «{name}» создана!")
     return ConversationHandler.END
 
+# ---------- USER JOIN ----------
 async def join(update: Update, context):
     games = db.get_games()
     if len(games) == 0:
@@ -88,6 +90,7 @@ async def save_wishes(update: Update, context):
     await update.message.reply_text("Вы успешно зарегистрированы!")
     return ConversationHandler.END
 
+# ---------- EXPORT ----------
 async def export(update, context):
     if update.effective_user.username != ADMIN_USERNAME:
         return
@@ -101,6 +104,7 @@ async def export(update, context):
         utils.export_to_excel(participants, filename)
         await update.message.reply_document(open(filename, "rb"))
 
+# ---------- DISTRIBUTION ----------
 async def distribute(update, context):
     if update.effective_user.username != ADMIN_USERNAME:
         return
@@ -124,6 +128,7 @@ async def distribute(update, context):
                 pass
         await update.message.reply_text(f"Распределение в коробке «{name}» завершено!")
 
+# ---------- RESET ----------
 async def reset(update, context):
     if update.effective_user.username != ADMIN_USERNAME:
         return
@@ -132,8 +137,8 @@ async def reset(update, context):
         db.delete_participants(gid)
     await update.message.reply_text("Все участники удалены.")
 
+# ---------- HANDLER ----------
 def main():
-    keep_alive()
     app = Application.builder().token(TOKEN).build()
 
     join_conv = ConversationHandler(
@@ -160,7 +165,9 @@ def main():
     app.add_handler(CommandHandler("distribute", distribute))
     app.add_handler(CommandHandler("reset", reset))
     app.add_handler(MessageHandler(filters.Regex("^Админ-панель$"), admin_panel))
+
+    # Запуск бота через polling
     app.run_polling()
 
-if __name__ == "__main__":
+if name == "__main__":
     main()
